@@ -1,6 +1,7 @@
 import flet as ft
 from custom_controls.Template import Template
 
+DISABLED_ARROW_ICON = ft.IconButton(disabled = True, opacity = 0, icon = ft.icons.ARROW_DOWNWARD)
 
 def main (page: ft.Page):
     # Page Attributes
@@ -26,6 +27,16 @@ def main (page: ft.Page):
         raise NotImplemented("delete_all_templates function note implemented")
 
     nav_filter = ft.TextField(label = "Search/Filter")
+
+    category_field = ft.TextField(col = 2, label = "Category", suffix = DISABLED_ARROW_ICON)
+    title_field = ft.TextField(col = 3, label = "Title", suffix = DISABLED_ARROW_ICON)
+    template_field = ft.TextField(
+        col = 6,
+        label = "Template",
+        suffix = ft.IconButton(
+            icon = ft.icons.ARROW_DOWNWARD,
+            on_click = create_template))
+
     templates_row = ft.ResponsiveRow(columns = 20)
 
     save_button = ft.IconButton(
@@ -68,10 +79,9 @@ def main (page: ft.Page):
         ft.ResponsiveRow(
             alignment = ft.MainAxisAlignment.CENTER,
             controls = [
-                ft.IconButton(
-                    col = 2,
-                    icon = ft.icons.ADD,
-                    on_click = create_template)
+                category_field,
+                title_field,
+                template_field,
             ],
         ),
         ft.Divider(opacity = 0),
