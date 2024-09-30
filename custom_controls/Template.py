@@ -14,7 +14,7 @@ FontWeight,
 
 class Template(Card):
 
-    def __init__(self):
+    def __init__(self, category: str, title: str, template_text: str):
         super().__init__(col = {"md": 5, "lg": 4})
         self.content = Container(
             content = Column(
@@ -24,7 +24,7 @@ class Template(Card):
                             Text(
                                 opacity = 0.5,
                                 size = 8,
-                                value = "Category",
+                                value = category,
                                 italic = True,
                             ),
                             IconButton(
@@ -41,7 +41,7 @@ class Template(Card):
                         [
                             Text(
                                 size = 16,
-                                value = "Title Text",
+                                value = title,
                                 weight = FontWeight.W_700,
                             ),
 
@@ -50,7 +50,7 @@ class Template(Card):
                     ),
                     ResponsiveRow(
                         [
-                            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae velit massa. Proin tempus placerat nunc, et dignissim odio lacinia at. Donec fermentum luctus ante nec pulvinar.")
+                            Text(template_text)
                         ]
                     ),
                 ]

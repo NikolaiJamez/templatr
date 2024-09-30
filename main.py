@@ -10,8 +10,14 @@ def main (page: ft.Page):
     # Functions
     def create_template (e: ft.ControlEvent):
         templates_row.controls.append(
-            Template()
+            Template(category_field.value, title_field.value, template_field.value)
         )
+        category_field.value = ""
+        title_field.value = ""
+        template_field.value = ""
+        category_field.update()
+        title_field.update()
+        template_field.update()
         templates_row.update()
 
     def save_templates (e: ft.ControlEvent):
@@ -32,7 +38,7 @@ def main (page: ft.Page):
     title_field = ft.TextField(col = 3, label = "Title", suffix = DISABLED_ARROW_ICON)
     template_field = ft.TextField(
         col = 6,
-        label = "Template",
+        label = "Template Text",
         suffix = ft.IconButton(
             icon = ft.icons.ARROW_DOWNWARD,
             on_click = create_template))
