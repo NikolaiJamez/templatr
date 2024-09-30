@@ -1,6 +1,5 @@
 import flet as ft
-from blivet.partitioning import align_size_for_disklabel
-from setuptools.command.saveopts import saveopts
+from custom_controls.Template import Template
 
 
 def main (page: ft.Page):
@@ -10,46 +9,7 @@ def main (page: ft.Page):
     # Functions
     def create_template (e: ft.ControlEvent):
         templates_row.controls.append(
-            ft.Card(
-                content = ft.Container(
-                    content = ft.Column(
-                        [
-                            ft.Row(
-                                [
-                                    ft.Text(
-                                        opacity = 0.5,
-                                        size = 8,
-                                        value = "Category",
-                                        italic = True,
-                                    ),
-                                    ft.IconButton(
-                                        height = 32,
-                                        icon = ft.icons.CLOSE,
-                                        icon_color = ft.colors.RED,
-                                        icon_size = 16,
-                                        visible = False,
-                                        width = 32)
-                                ],
-                                alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
-                            ),
-                            ft.Row(
-                                [
-                                    ft.Text(
-                                        size = 16,
-                                        value = "Title Text",
-                                        weight = ft.FontWeight.W_700,
-                                    ),
-
-                                ],
-                                alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
-                            ),
-                            ft.ResponsiveRow([ft.Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae velit massa. Proin tempus placerat nunc, et dignissim odio lacinia at. Donec fermentum luctus ante nec pulvinar.")]),
-                        ]
-                    ),
-                    padding = 10,
-                ),
-                col = {"md": 5, "lg": 4}
-            )
+            Template()
         )
         templates_row.update()
 
