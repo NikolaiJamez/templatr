@@ -1,21 +1,25 @@
 import flet as ft
+from blivet.partitioning import align_size_for_disklabel
 from setuptools.command.saveopts import saveopts
 
 
 def main(page: ft.Page):
     page.window.frameless = True
 
-    def save_templates():
-        pass
+    def create_template(e: ft.ControlEvent):
+        raise NotImplemented("create_template function note implemented")
 
-    def refresh_templates():
-        pass
+    def save_templates(e: ft.ControlEvent):
+        raise NotImplemented("save_templates function note implemented")
 
-    def reorder_templates():
-        pass
+    def refresh_templates(e: ft.ControlEvent):
+        raise NotImplemented("refresh_templates function note implemented")
 
-    def delete_all_templates():
-        pass
+    def reorder_templates(e: ft.ControlEvent):
+        raise NotImplemented("reorder_templates function note implemented")
+
+    def delete_all_templates(e: ft.ControlEvent):
+        raise NotImplemented("delete_all_templates function note implemented")
 
     nav_filter = ft.TextField(label = "Search/Filter")
     save_button = ft.IconButton(
@@ -37,8 +41,6 @@ def main(page: ft.Page):
         tooltip = "Delete All - WARNING",
         on_click = delete_all_templates)
 
-
-
     page.appbar = ft.AppBar(
         leading = ft.Icon(ft.icons.COPY_ALL),
         leading_width = 50,
@@ -54,7 +56,22 @@ def main(page: ft.Page):
         ],
     )
 
-    page.add()
+    templates_row = ft.ResponsiveRow()
+
+    page.add(
+        ft.Divider(opacity = 0),
+        ft.ResponsiveRow(
+            alignment = ft.MainAxisAlignment.CENTER,
+            controls = [
+                ft.IconButton(
+                    col = 2,
+                    icon = ft.icons.ADD,
+                    on_click = create_template)
+            ],
+        ),
+        ft.Divider(opacity = 0),
+        templates_row,
+    )
 
 
 if __name__ == "__main__":
