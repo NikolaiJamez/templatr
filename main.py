@@ -1,23 +1,72 @@
 import flet as ft
-from setuptools.command.saveopts import saveopts
+from custom_controls.Template import Template
 
+DISABLED_ARROW_ICON = ft.IconButton(disabled = True, opacity = 0, icon = ft.icons.ARROW_DOWNWARD)
 
-def main(page: ft.Page):
+def main (page: ft.Page):
+    # Page Attributes
     page.window.frameless = True
 
-    def save_templates():
-        pass
+    # Functions
+    def create_template (e: ft.ControlEvent):
+        return_flag = False
+        for field in [category_field, title_field, template_field]:
+            field.border_color = None
+            if field.value == "":
+                field.border_color = ft.colors.RED
+                return_flag = True
+            field.update()
+        if return_flag:
+            return
 
-    def refresh_templates():
-        pass
 
-    def reorder_templates():
-        pass
 
-    def delete_all_templates():
-        pass
+
+        templates_row.controls.append(
+            Template(category_field.value, title_field.value, template_field.value)
+        )
+        category_field.value = ""
+        title_field.value = ""
+        template_field.value = ""
+        category_field.update()
+        title_field.update()
+        template_field.update()
+        templates_row.update()
+
+    def save_templates (e: ft.ControlEvent):
+        raise NotImplemented("save_templates function note implemented")
+
+    def refresh_templates (e: ft.ControlEvent):
+        raise NotImplemented("refresh_templates function note implemented")
+
+    def reorder_templates (e: ft.ControlEvent):
+        raise NotImplemented("reorder_templates function note implemented")
+
+    def delete_all_templates (e: ft.ControlEvent):
+        raise NotImplemented("delete_all_templates function note implemented")
 
     nav_filter = ft.TextField(label = "Search/Filter")
+
+    category_field = ft.TextField(
+        col = 2,
+        label = "Category",
+        suffix = DISABLED_ARROW_ICON)
+    title_field = ft.TextField(
+        col = 3,
+        label = "Title",
+        suffix = DISABLED_ARROW_ICON)
+    template_field = ft.TextField(
+        col = 6,
+        label = "Template Text",
+        multiline = True,
+        on_submit = create_template,
+        shift_enter = True,
+        suffix = ft.IconButton(
+            icon = ft.icons.ARROW_DOWNWARD,
+            on_click = create_template))
+
+    templates_row = ft.ResponsiveRow(columns = 20)
+
     save_button = ft.IconButton(
         icon = ft.icons.SAVE,
         icon_color = ft.colors.GREEN,
@@ -37,8 +86,6 @@ def main(page: ft.Page):
         tooltip = "Delete All - WARNING",
         on_click = delete_all_templates)
 
-
-
     page.appbar = ft.AppBar(
         leading = ft.Icon(ft.icons.COPY_ALL),
         leading_width = 50,
@@ -54,7 +101,20 @@ def main(page: ft.Page):
         ],
     )
 
-    page.add()
+
+    page.add(
+        ft.Divider(opacity = 0),
+        ft.ResponsiveRow(
+            alignment = ft.MainAxisAlignment.CENTER,
+            controls = [
+                category_field,
+                title_field,
+                template_field,
+            ],
+        ),
+        ft.Divider(opacity = 0),
+        templates_row,
+    )
 
 
 if __name__ == "__main__":
