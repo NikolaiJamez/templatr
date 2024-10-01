@@ -12,10 +12,12 @@ MainAxisAlignment,
 FontWeight,
 )
 
+DEFAULT_COL_SIZE = {"md": 5, "lg": 4}
+
 class Template(Card):
 
     def __init__(self, category: str, title: str, template_text: str):
-        super().__init__(col = {"md": 5, "lg": 4})
+        super().__init__(col = DEFAULT_COL_SIZE)
         self.content = Container(
             content = Column(
                 [
@@ -26,6 +28,7 @@ class Template(Card):
                                 size = 8,
                                 value = category,
                                 italic = True,
+                                offset = (-1, 0),
                             ),
                             IconButton(
                                 height = 32,
@@ -35,7 +38,7 @@ class Template(Card):
                                 visible = False,
                                 width = 32)
                         ],
-                        alignment = MainAxisAlignment.SPACE_BETWEEN,
+                        alignment = MainAxisAlignment.END,
                     ),
                     Row(
                         [
@@ -57,51 +60,7 @@ class Template(Card):
             ),
             padding = 10,
         )
-        self.col = {"md": 5, "lg": 4}
 
 
     def build(self):
         return self
-
-
-
-# ft.Card(
-#                 content = ft.Container(
-#                     content = ft.Column(
-#                         [
-#                             ft.Row(
-#                                 [
-#                                     ft.Text(
-#                                         opacity = 0.5,
-#                                         size = 8,
-#                                         value = "Category",
-#                                         italic = True,
-#                                     ),
-#                                     ft.IconButton(
-#                                         height = 32,
-#                                         icon = ft.icons.CLOSE,
-#                                         icon_color = ft.colors.RED,
-#                                         icon_size = 16,
-#                                         visible = False,
-#                                         width = 32)
-#                                 ],
-#                                 alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
-#                             ),
-#                             ft.Row(
-#                                 [
-#                                     ft.Text(
-#                                         size = 16,
-#                                         value = "Title Text",
-#                                         weight = ft.FontWeight.W_700,
-#                                     ),
-#
-#                                 ],
-#                                 alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
-#                             ),
-#                             ft.ResponsiveRow([ft.Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae velit massa. Proin tempus placerat nunc, et dignissim odio lacinia at. Donec fermentum luctus ante nec pulvinar.")]),
-#                         ]
-#                     ),
-#                     padding = 10,
-#                 ),
-#                 col = {"md": 5, "lg": 4}
-#             )

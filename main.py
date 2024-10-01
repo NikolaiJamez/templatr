@@ -9,6 +9,19 @@ def main (page: ft.Page):
 
     # Functions
     def create_template (e: ft.ControlEvent):
+        return_flag = False
+        for field in [category_field, title_field, template_field]:
+            field.border_color = None
+            if field.value == "":
+                field.border_color = ft.colors.RED
+                return_flag = True
+            field.update()
+        if return_flag:
+            return
+
+
+
+
         templates_row.controls.append(
             Template(category_field.value, title_field.value, template_field.value)
         )
@@ -34,11 +47,20 @@ def main (page: ft.Page):
 
     nav_filter = ft.TextField(label = "Search/Filter")
 
-    category_field = ft.TextField(col = 2, label = "Category", suffix = DISABLED_ARROW_ICON)
-    title_field = ft.TextField(col = 3, label = "Title", suffix = DISABLED_ARROW_ICON)
+    category_field = ft.TextField(
+        col = 2,
+        label = "Category",
+        suffix = DISABLED_ARROW_ICON)
+    title_field = ft.TextField(
+        col = 3,
+        label = "Title",
+        suffix = DISABLED_ARROW_ICON)
     template_field = ft.TextField(
         col = 6,
         label = "Template Text",
+        multiline = True,
+        on_submit = create_template,
+        shift_enter = True,
         suffix = ft.IconButton(
             icon = ft.icons.ARROW_DOWNWARD,
             on_click = create_template))
