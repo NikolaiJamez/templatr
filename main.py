@@ -23,7 +23,12 @@ def main (page: ft.Page):
             return
 
         templates_row.controls.append(
-            Template(str(uuid4()), category_field.value, title_field.value, template_field.value)
+            Template(
+                str(uuid4()),
+                category_field.value,
+                title_field.value,
+                template_field.value,
+                delete_template)
         )
         category_field.value = ""
         title_field.value = ""
@@ -41,10 +46,7 @@ def main (page: ft.Page):
         data = [template.data for template in templates_row.controls]
         with open(PERSISTENT_FILENAME, "w") as outfile:
             outfile.writelines(dumps(data, indent = 4))
-        save_button.icon = ft.icons.SAVE
-        delete_button.icon = ft.icons.DELETE
-        save_button.update()
-        delete_button.update()
+        pending_changes(e)
 
 
     def refresh_templates (e: ft.ControlEvent = None):
@@ -63,18 +65,23 @@ def main (page: ft.Page):
                     data.get("template_id"),
                     data.get("template_category"),
                     data.get("template_title"),
-                    data.get("template_text"))
+                    data.get("template_text"),
+                    delete_template)
             )
         
-        save_button.icon = ft.icons.SAVE
-        delete_button.icon = ft.icons.DELETE
         templates_row.update()
-        save_button.update()
-        delete_button.update()
+        
+        if e:
+            save_button.icon = ft.icons.SAVE
+            delete_all_button.icon = ft.icons.DELETE
+            save_button.update()
+            delete_all_button.update()
 
 
     def reorder_templates (e: ft.ControlEvent):
-        raise NotImplemented("reorder_templates function note implemented")
+        for template in templates_row.controls:
+            template.delete_button.visible = not template.delete_button.visible
+            template.update()
 
 
     def delete_all_templates (e: ft.ControlEvent):
@@ -82,11 +89,29 @@ def main (page: ft.Page):
             # TODO Show message advising no templates to remove
             return
         templates_row.controls = []
-        delete_button.icon = ft.icons.AUTO_DELETE
-        save_button.icon = ft.icons.SAVE_AS
         templates_row.update()
-        delete_button.update()
+        pending_changes(e)
+
+    
+    def delete_template(e: ft.ControlEvent):
+        for idx, template in enumerate(templates_row.controls):
+            template_id = template.data.get("template_id")
+            
+            if e.control.data != template_id:
+                continue
+
+            templates_row.controls.pop(idx)
+            templates_row.update()
+            save_button.icon = ft.icons.SAVE_AS
+            save_button.update()
+            break
+
+    
+    def pending_changes(e: ft.ControlEvent = None):
+        save_button.icon = ft.icons.SAVE_AS
+        delete_all_button.icon = ft.icons.AUTO_DELETE
         save_button.update()
+        delete_all_button.update()
 
 
     nav_filter = ft.TextField(label = "Search/Filter")
@@ -129,7 +154,7 @@ def main (page: ft.Page):
         tooltip = "Reorder",
         on_click = reorder_templates)
     
-    delete_button = ft.IconButton(
+    delete_all_button = ft.IconButton(
         icon = ft.icons.DELETE,
         icon_color = ft.colors.RED,
         tooltip = "Delete All - WARNING",
@@ -146,7 +171,7 @@ def main (page: ft.Page):
             save_button,
             refresh_button,
             reorder_button,
-            delete_button,
+            delete_all_button,
         ],
     )
 
