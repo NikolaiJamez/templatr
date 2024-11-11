@@ -62,7 +62,8 @@ def main (page: ft.Page):
         raise NotImplemented("reorder_templates function note implemented")
 
     def delete_all_templates (e: ft.ControlEvent):
-        raise NotImplemented("delete_all_templates function note implemented")
+        templates_row.controls = []
+        templates_row.update()
 
     nav_filter = ft.TextField(label = "Search/Filter")
 
@@ -70,10 +71,12 @@ def main (page: ft.Page):
         col = 2,
         label = "Category",
         suffix = DISABLED_ARROW_ICON)
+    
     title_field = ft.TextField(
         col = 3,
         label = "Title",
         suffix = DISABLED_ARROW_ICON)
+    
     template_field = ft.TextField(
         col = 6,
         label = "Template Text",
