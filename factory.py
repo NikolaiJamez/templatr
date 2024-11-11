@@ -1,17 +1,19 @@
-from uuid import uuid4
+import json
 from sys import argv
+from uuid import uuid4
 from faker import Faker
 
 
 def export_data(arr: list[str]) -> None:
-    raise NotImplementedError()
+    with open('templates.json', 'w') as outfile:
+        outfile.writelines(json.dumps(arr, indent = 4))
 
 def generate_objects(count= 50):
     arr: list[dict] = []
     
     for _ in range(count):
         obj: dict = {
-            "template_id": str(uuid4),
+            "template_id": str(uuid4()),
             "template_category": fake.first_name(),
             "template_title": fake.text(),
             "template_text": fake.text()
@@ -35,4 +37,4 @@ if __name__ == "__main__":
         print("No number given, generating 50 objects...")
         object_arr = generate_objects()
     
-    print(object_arr)
+    export_data(object_arr)
