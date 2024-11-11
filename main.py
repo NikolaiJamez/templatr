@@ -39,8 +39,14 @@ def main (page: ft.Page):
             outfile.writelines(dumps(data, indent = 4))
 
     def refresh_templates (e: ft.ControlEvent = None):
-        with open(PERSISTENT_FILENAME, "r") as infile:
-            template_data = loads(infile.read())
+        try:
+            with open(PERSISTENT_FILENAME, "r") as infile:
+                template_data = loads(infile.read())
+        except FileNotFoundError:
+            with open(PERSISTENT_FILENAME, 'w') as outfile:
+                pass
+            return
+        
         for data in template_data:
             templates_row.controls.append(
                 Template(
@@ -85,14 +91,17 @@ def main (page: ft.Page):
         icon_color = ft.colors.GREEN,
         tooltip = "Save",
         on_click = save_templates)
+    
     refresh_button = ft.IconButton(
         icon = ft.icons.REFRESH,
         tooltip = "Refresh",
         on_click = refresh_templates)
+    
     reorder_button = ft.IconButton(
         icon = ft.icons.SHUFFLE,
         tooltip = "Reorder",
         on_click = reorder_templates)
+    
     delete_button = ft.IconButton(
         icon = ft.icons.DELETE,
         icon_color = ft.colors.RED,
