@@ -16,7 +16,7 @@ DEFAULT_COL_SIZE = {"md": 5, "lg": 4}
 
 class Template(Card):
 
-    def __init__(self, category: str, title: str, template_text: str):
+    def __init__(self, id_str: str, category: str, title: str, template_text: str):
         super().__init__(col = DEFAULT_COL_SIZE)
         self.content = Container(
             content = Column(
@@ -60,6 +60,12 @@ class Template(Card):
             ),
             padding = 10,
         )
+        self.data = {
+            "template_id": id_str,
+            "template_category": category,
+            "template_title": title,
+            "template_text": template_text,
+        }
 
 
     def build(self):

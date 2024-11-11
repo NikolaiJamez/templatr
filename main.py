@@ -1,7 +1,10 @@
+from json import dumps, loads
 import flet as ft
+from uuid import uuid4
 from custom_controls.Template import Template
 
 DISABLED_ARROW_ICON = ft.IconButton(disabled = True, opacity = 0, icon = ft.icons.ARROW_DOWNWARD)
+PERSISTENT_FILENAME = "templates.json"
 
 def main (page: ft.Page):
     # Page Attributes
@@ -19,11 +22,8 @@ def main (page: ft.Page):
         if return_flag:
             return
 
-
-
-
         templates_row.controls.append(
-            Template(category_field.value, title_field.value, template_field.value)
+            Template(str(uuid4()), category_field.value, title_field.value, template_field.value)
         )
         category_field.value = ""
         title_field.value = ""
@@ -34,10 +34,23 @@ def main (page: ft.Page):
         templates_row.update()
 
     def save_templates (e: ft.ControlEvent):
-        raise NotImplemented("save_templates function note implemented")
+        data = [template.data for template in templates_row.controls]
+        with open(PERSISTENT_FILENAME, "w") as outfile:
+            outfile.writelines(dumps(data, indent = 4))
 
-    def refresh_templates (e: ft.ControlEvent):
-        raise NotImplemented("refresh_templates function note implemented")
+    def refresh_templates (e: ft.ControlEvent = None):
+        with open(PERSISTENT_FILENAME, "r") as infile:
+            template_data = loads(infile.read())
+        for data in template_data:
+            templates_row.controls.append(
+                Template(
+                    data.get("template_id"),
+                    data.get("template_category"),
+                    data.get("template_title"),
+                    data.get("template_text"))
+            )
+        templates_row.update()
+
 
     def reorder_templates (e: ft.ControlEvent):
         raise NotImplemented("reorder_templates function note implemented")
@@ -115,6 +128,7 @@ def main (page: ft.Page):
         ft.Divider(opacity = 0),
         templates_row,
     )
+    refresh_templates()
 
 
 if __name__ == "__main__":
