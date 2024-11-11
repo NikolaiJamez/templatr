@@ -33,10 +33,19 @@ def main (page: ft.Page):
         template_field.update()
         templates_row.update()
 
+        save_button.icon = ft.icons.SAVE_AS
+        save_button.update()
+
+
     def save_templates (e: ft.ControlEvent):
         data = [template.data for template in templates_row.controls]
         with open(PERSISTENT_FILENAME, "w") as outfile:
             outfile.writelines(dumps(data, indent = 4))
+        save_button.icon = ft.icons.SAVE
+        delete_button.icon = ft.icons.DELETE
+        save_button.update()
+        delete_button.update()
+
 
     def refresh_templates (e: ft.ControlEvent = None):
         try:
@@ -47,6 +56,7 @@ def main (page: ft.Page):
                 pass
             return
         
+        templates_row.controls = []
         for data in template_data:
             templates_row.controls.append(
                 Template(
@@ -55,15 +65,29 @@ def main (page: ft.Page):
                     data.get("template_title"),
                     data.get("template_text"))
             )
+        
+        save_button.icon = ft.icons.SAVE
+        delete_button.icon = ft.icons.DELETE
         templates_row.update()
+        save_button.update()
+        delete_button.update()
 
 
     def reorder_templates (e: ft.ControlEvent):
         raise NotImplemented("reorder_templates function note implemented")
 
+
     def delete_all_templates (e: ft.ControlEvent):
+        if len(templates_row.controls) == 0:
+            # TODO Show message advising no templates to remove
+            return
         templates_row.controls = []
+        delete_button.icon = ft.icons.AUTO_DELETE
+        save_button.icon = ft.icons.SAVE_AS
         templates_row.update()
+        delete_button.update()
+        save_button.update()
+
 
     nav_filter = ft.TextField(label = "Search/Filter")
 
